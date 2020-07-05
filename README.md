@@ -28,8 +28,8 @@ let g:completion_chain_complete_list = {
 ### TODO
 Any help would be greatly appreciated!
 
-- [ ] Better Scoring Rules based on TabNine Score, fuzzy matching
+- [ ] Better Scoring rules based on "TabNine score", provide fuzzy matching
 - [ ] Docs
 - [ ] Configuration
 - [ ] Error Handling
-
+- [ ] Truncate string to avoid tabnine limit
