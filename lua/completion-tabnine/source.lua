@@ -84,23 +84,17 @@ M.triggerFunction = function(_, opt)
   M.job.send(vim.fn.json_encode(req) .. "\n")
 end
 
-
 M.getCompletionItems = function(prefix)
   local complete_items = {}
   for _, item in ipairs(M.items) do
-    if item ~= "^" .. prefix then
       table.insert(complete_items, {
           word = item,
           kind = 'tabnine',
-          -- score = score,
           -- icase = 1,
-          -- dup = 1,
-          -- empty = 1,
           icase = 1,
           dup = 0,
           empty = 0,
         })
-    end
   end
   return complete_items
 end
