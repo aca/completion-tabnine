@@ -10,7 +10,7 @@ A **TabNine** completion source for [completion-nvim](https://github.com/haorenW
 
 vim-plug
 ```
-Plug 'aca/tabnine-completion', { 'do': './install.sh' }
+Plug 'aca/completion-tabnine', { 'do': './install.sh' }
 ```
 
 vimrc
