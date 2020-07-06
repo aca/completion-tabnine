@@ -17,51 +17,51 @@ end
 
 M.items = {}
 M.job = luajob:new({
-    cmd = vim.fn["expand"]("<sfile>:p:h:h") .. "/TabNine",
-    on_stderr = function(err, data)
-      if err then
-        print('TabNine: ', err)
-      elseif data then
-        print('TabNine: ', data)
-      end
-    end,
-    on_exit = function(code, signal)
-      print('TabNine: job exited', code, signal)
-    end,
-    on_stdout = function(err, data)
-      if err then
-        print('error:', err)
-      elseif data then
-
-        -- {
-        --   "old_prefix": "wo",
-        --   "results": [
-        --     {
-        --       "new_prefix": "world",
-        --       "old_suffix": "",
-        --       "new_suffix": "",
-        --       "detail": "64%"
-        --     }
-        --   ],
-        --   "user_message": [],
-        --   "docs": []
-        -- }
-
-        M.items = {}
-        local response = vim.fn.json_decode(data)
-        local results = response.results
-        if results == nil then
-          return
-        end
-
-        -- table.sort(results, sortByDetail) -- TODO: should we sort?
-        for _, result in ipairs(results) do
-          table.insert(M.items, result.new_prefix)
-        end
-        M.callback = true
-      end
+  cmd = vim.fn["expand"]("<sfile>:p:h:h") .. "/TabNine",
+  on_stderr = function(err, data)
+    if err then
+      print('TabNine: ', err)
+    elseif data then
+      print('TabNine: ', data)
     end
-  })
+  end,
+  on_exit = function(code, signal)
+    print('TabNine: job exited', code, signal)
+  end,
+  on_stdout = function(err, data)
+    if err then
+      print('error:', err)
+    elseif data then
+
+      -- {
+      --   "old_prefix": "wo",
+      --   "results": [
+      --     {
+      --       "new_prefix": "world",
+      --       "old_suffix": "",
+      --       "new_suffix": "",
+      --       "detail": "64%"
+      --     }
+      --   ],
+      --   "user_message": [],
+      --   "docs": []
+      -- }
+
+      M.items = {}
+      local response = vim.fn.json_decode(data)
+      local results = response.results
+      if results == nil then
+        return
+      end
+
+      -- table.sort(results, sortByDetail) -- TODO: should we sort?
+      for _, result in ipairs(results) do
+        table.insert(M.items, result.new_prefix)
+      end
+      M.callback = true
+    end
+  end
+})
 
 M.job.start()
 
@@ -98,13 +98,13 @@ end
 M.getCompletionItems = function(prefix)
   local complete_items = {}
   for _, item in ipairs(M.items) do
-      table.insert(complete_items, {
-          word = item,
-          kind = 'tabnine',
-          icase = 1,
-          dup = 0,
-          empty = 0,
-        })
+    table.insert(complete_items, {
+      word = item,
+      kind = 'tabnine',
+      icase = 1,
+      dup = 0,
+      empty = 0,
+    })
   end
   return complete_items
 end
@@ -112,10 +112,10 @@ end
 function M.register()
   if require'completion' then
     require'completion'.addCompletionSource('tabnine', {
-        trigger = M.triggerFunction,
-        callback = M.getCallback,
-        item = M.getCompletionItems,
-      })
+      trigger = M.triggerFunction,
+      callback = M.getCallback,
+      item = M.getCompletionItems,
+    })
   end
 end
 

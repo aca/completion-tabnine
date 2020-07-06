@@ -11,12 +11,12 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 version=$(curl -sS https://update.tabnine.com/version)
 case $(uname -s) in
-    "Darwin")
-        platform="apple-darwin"
-        ;;
-    "Linux")
-        platform="unknown-linux-gnu"
-        ;;
+"Darwin")
+    platform="apple-darwin"
+    ;;
+"Linux")
+    platform="unknown-linux-gnu"
+    ;;
 esac
 triple="$(uname -m)-$platform"
 

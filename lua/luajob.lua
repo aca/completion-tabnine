@@ -5,7 +5,7 @@ local M = {}
 
 local function close_safely(handle)
   if not handle:is_closing() then
-      handle:close()
+    handle:close()
   end
 end
 
@@ -36,10 +36,10 @@ function M.shutdown(code, signal)
     M.on_exit(code, signal)
   end
   if M.on_stdout then
-      M.stdout:read_stop()
+    M.stdout:read_stop()
   end
   if M.on_stderr then
-      M.stderr:read_stop()
+    M.stderr:read_stop()
   end
   M.stop()
 end
@@ -81,10 +81,10 @@ function M.start()
     options,
     vim.schedule_wrap(M.shutdown))
   if M.on_stdout then
-      M.stdout:read_start(vim.schedule_wrap(M.on_stdout))
+    M.stdout:read_start(vim.schedule_wrap(M.on_stdout))
   end
   if M.on_stderr then
-      M.stderr:read_start(vim.schedule_wrap(M.on_stderr))
+    M.stderr:read_start(vim.schedule_wrap(M.on_stderr))
   end
 end
 return M
