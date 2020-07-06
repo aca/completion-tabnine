@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+#
 # Based on https://github.com/codota/TabNine/blob/master/dl_binaries.sh
-# Download latest TabNine binaries and install in /usr/local/bin/ 
+# Download latest TabNine binaries
 
 set -o errexit
 set -o pipefail
