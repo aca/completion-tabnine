@@ -8,22 +8,31 @@ A **TabNine** completion source for [completion-nvim](https://github.com/haorenW
 
 ### Install
 
-vim-plug
-```
-Plug 'aca/completion-tabnine', { 'do': './install.sh' }
-```
+- vim-plug
+  ```
+  Plug 'aca/completion-tabnine', { 'do': './install.sh' }
+  ```
 
-vimrc
-```
-" vimrc
-let g:completion_chain_complete_list = {
-    \ 'default': [
-    \    {'complete_items': ['lsp', 'snippet', 'tabnine' ]},
-    \    {'mode': '<c-p>'},
-    \    {'mode': '<c-n>'}
-    \]
-\}
-```
+### Configuration
+- vimrc
+  ```
+  " vimrc
+  let g:completion_chain_complete_list = {
+      \ 'default': [
+      \    {'complete_items': ['lsp', 'snippet', 'tabnine' ]},
+      \    {'mode': '<c-p>'},
+      \    {'mode': '<c-n>'}
+      \]
+  \}
+  ```
+- options
+  ```
+  " max tabnine completion options
+  let g:completion_tabnine_max_num_results=7
+
+  " TODO: max line tabnine input
+  let g:completion_tabnine_line_limit=1000
+  ```
 
 ### TODO
 Any help would be greatly appreciated!

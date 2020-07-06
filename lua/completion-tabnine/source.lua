@@ -9,6 +9,12 @@ M.getCallback = function()
   return M.callback
 end
 
+-- local function sortByDetail(a,b)
+--   local a_score = a.detail ~= nil and tonumber(string.sub(a.detail,0, -2)) or 0
+--   local b_score = b.detail ~= nil and tonumber(string.sub(b.detail,0, -2)) or 0
+--   return a_score >  b_score
+-- end
+
 M.items = {}
 M.job = luajob:new({
     cmd = vim.fn["expand"]("<sfile>:p:h:h") .. "/TabNine",
@@ -43,11 +49,16 @@ M.job = luajob:new({
 
         M.items = {}
         local response = vim.fn.json_decode(data)
-        for _, result in ipairs(response.results) do
+        local results = response.results
+        if results == nil then
+          return
+        end
+
+        -- table.sort(results, sortByDetail) -- TODO: should we sort?
+        for _, result in ipairs(results) do
           table.insert(M.items, result.new_prefix)
         end
         M.callback = true
-
       end
     end
   })
@@ -76,7 +87,7 @@ M.triggerFunction = function(_, opt)
       after = after,
       region_includes_beginning = true,
       region_includes_end = true,
-      max_num_results = 10,
+      max_num_results = vim.g.completion_tabnine_max_num_results,
       filename = vim.fn["expand"]("%:p")
     }
   }
@@ -90,7 +101,6 @@ M.getCompletionItems = function(prefix)
       table.insert(complete_items, {
           word = item,
           kind = 'tabnine',
-          -- icase = 1,
           icase = 1,
           dup = 0,
           empty = 0,
