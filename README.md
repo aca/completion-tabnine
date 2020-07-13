@@ -27,18 +27,22 @@ A **TabNine** completion source for [completion-nvim](https://github.com/haorenW
   ```
 - options
   ```
-  " max tabnine completion options
+  " max tabnine completion options(default 7)
   let g:completion_tabnine_max_num_results=7
 
-  " TODO: max line tabnine input
-  let g:completion_tabnine_line_limit=1000
+  " sort by tabnine score (default 0)
+  let g:completion_tabnine_sort_by_details=1
+
+  " max line for tabnine input(default 1000)
+  " from current line -1000 ~ +1000 lines is passed as input
+  let g:completion_tabnine_max_lines=1000
   ```
 
 ### TODO
 Any help would be greatly appreciated!
 
-- [ ] Better Scoring rules based on "TabNine score", provide fuzzy matching
-- [ ] Docs
-- [ ] Configuration
+- [x] Scoring based on "TabNine score"
+- [x] Configuration
+- [x] Truncate string to avoid tabnine limit
+- [ ] Vimdoc
 - [ ] Error Handling
-- [ ] Truncate string to avoid tabnine limit

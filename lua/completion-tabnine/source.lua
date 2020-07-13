@@ -70,15 +70,23 @@ M.job.start()
 
 
 M.triggerFunction = function(_, opt)
+  local max_lines = vim.g.completion_tabnine_max_lines
   local cursor=api.nvim_win_get_cursor(0)
-  local lines_before = api.nvim_buf_get_lines(0, 0, cursor[1]-1, true)
+
   local cur_line = api.nvim_get_current_line()
-  local cur_line_before = string.sub( cur_line, 0, cursor[2])
+  local cur_line_before = string.sub(cur_line, 0, cursor[2])
+  local cur_line_after = string.sub(cur_line, cursor[2]+1) -- include current character
+
+  local region_includes_beginning = false
+  local region_includes_end = false
+  if cursor[1] - max_lines <= 1 then region_includes_beginning = true end
+  if cursor[1] + max_lines >= vim.fn['line']('$') then region_includes_end = true end
+
+  local lines_before = api.nvim_buf_get_lines(0, cursor[1] - max_lines , cursor[1]-1, false)
   table.insert(lines_before, cur_line_before)
   local before = vim.fn.join(lines_before, "\n")
 
-  local cur_line_after = string.sub( cur_line, cursor[2]+1) -- include current character
-  local lines_after = api.nvim_buf_get_lines(0, cursor[1], -1, true)
+  local lines_after = api.nvim_buf_get_lines(0, cursor[1], cursor[1] + max_lines, false)
   table.insert(lines_after, 1, cur_line_after)
   local after = vim.fn.join(lines_after, "\n")
 
@@ -88,8 +96,8 @@ M.triggerFunction = function(_, opt)
     Autocomplete = {
       before = before,
       after = after,
-      region_includes_beginning = true,
-      region_includes_end = true,
+      region_includes_beginning = region_includes_beginning,
+      region_includes_end = region_includes_end,
       max_num_results = vim.g.completion_tabnine_max_num_results,
       filename = vim.fn["expand"]("%:p")
     }
