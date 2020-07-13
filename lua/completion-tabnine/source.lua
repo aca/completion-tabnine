@@ -9,11 +9,11 @@ M.getCallback = function()
   return M.callback
 end
 
--- local function sortByDetail(a,b)
---   local a_score = a.detail ~= nil and tonumber(string.sub(a.detail,0, -2)) or 0
---   local b_score = b.detail ~= nil and tonumber(string.sub(b.detail,0, -2)) or 0
---   return a_score >  b_score
--- end
+local function sortByDetail(a,b)
+  local a_score = a.detail ~= nil and tonumber(string.sub(a.detail,0, -2)) or 0
+  local b_score = b.detail ~= nil and tonumber(string.sub(b.detail,0, -2)) or 0
+  return a_score >  b_score
+end
 
 M.items = {}
 M.job = luajob:new({
@@ -54,7 +54,10 @@ M.job = luajob:new({
         return
       end
 
-      -- table.sort(results, sortByDetail) -- TODO: should we sort?
+      if vim.g.completion_tabnine_sort_by_details == 1 then
+        table.sort(results, sortByDetail)
+      end
+
       for _, result in ipairs(results) do
         table.insert(M.items, result.new_prefix)
       end
