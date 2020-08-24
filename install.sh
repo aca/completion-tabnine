@@ -7,7 +7,7 @@ set -o errexit
 set -o pipefail
 set -x
 
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+rm TabNine || true # remove old link
 
 version=$(curl -sS https://update.tabnine.com/version)
 case $(uname -s) in
@@ -22,11 +22,11 @@ triple="$(uname -m)-$platform"
 
 cd $(dirname $0)
 path=$version/$triple/TabNine
-if [ -f binaries/$path ]; then
+if [[ -f "binaries/$path" ]] && [[ -e "binaries/TabNine_$(uname -s)" ]]; then
     exit
 fi
 echo Downloading version $version
 curl https://update.tabnine.com/$path --create-dirs -o binaries/$path
 chmod +x binaries/$path
 
-ln -sf binaries/$path TabNine
+ln -sf $path "binaries/TabNine_$(uname -s)"

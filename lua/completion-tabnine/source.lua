@@ -17,7 +17,7 @@ end
 
 M.items = {}
 M.job = luajob:new({
-  cmd = vim.fn["expand"]("<sfile>:p:h:h") .. "/TabNine",
+  cmd = vim.fn["expand"]("<sfile>:p:h:h") .. "/binaries/" .. "/TabNine_" .. vim.fn["trim"](vim.fn["system"]("uname", "-a")),
   on_stderr = function(err, data)
     if err then
       print('TabNine: ', err)
