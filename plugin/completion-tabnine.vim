@@ -7,4 +7,4 @@ let g:completion_tabnine_max_num_results = get(g:, 'completion_tabnine_max_num_r
 let g:completion_tabnine_max_lines = get(g:, 'completion_tabnine_max_lines', 1000)
 let g:completion_tabnine_sort_by_details = get(g:, 'completion_tabnine_sort_by_details', 0)
 
-lua require'completion-tabnine'.register()
+autocmd VimEnter * lua require'completion-tabnine'.register()
