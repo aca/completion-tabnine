@@ -1,12 +1,12 @@
 local M = {}
+local vim = vim
 local api = vim.api
+local fn = vim.fn
 local completion = require 'completion'
 -- local match = require 'completion.matching'
 
 M.callback = false
-M.getCallback = function()
-  return M.callback
-end
+M.getCallback = function() return M.callback end
 
 local function sortByDetail(a,b)
   local a_score = a.detail ~= nil and tonumber(string.sub(a.detail,0, -2)) or 0
@@ -17,6 +17,11 @@ end
 M.items = {}
 
 M.triggerFunction = function()
+  if M.job == 0 then
+    return
+  end
+  M.callback = false
+
   local max_lines = vim.g.completion_tabnine_max_lines
   local cursor=api.nvim_win_get_cursor(0)
 
@@ -27,15 +32,15 @@ M.triggerFunction = function()
   local region_includes_beginning = false
   local region_includes_end = false
   if cursor[1] - max_lines <= 1 then region_includes_beginning = true end
-  if cursor[1] + max_lines >= vim.fn['line']('$') then region_includes_end = true end
+  if cursor[1] + max_lines >= fn['line']('$') then region_includes_end = true end
 
   local lines_before = api.nvim_buf_get_lines(0, cursor[1] - max_lines , cursor[1]-1, false)
   table.insert(lines_before, cur_line_before)
-  local before = vim.fn.join(lines_before, "\n")
+  local before = fn.join(lines_before, "\n")
 
   local lines_after = api.nvim_buf_get_lines(0, cursor[1], cursor[1] + max_lines, false)
   table.insert(lines_after, 1, cur_line_after)
-  local after = vim.fn.join(lines_after, "\n")
+  local after = fn.join(lines_after, "\n")
 
   local req = {}
   req.version = "2.0.0"
@@ -46,11 +51,11 @@ M.triggerFunction = function()
       region_includes_beginning = region_includes_beginning,
       region_includes_end = region_includes_end,
       max_num_results = vim.g.completion_tabnine_max_num_results,
-      filename = vim.fn["expand"]("%:p")
+      filename = fn["expand"]("%:p")
     }
   }
 
-  vim.fn.chansend(M.job, vim.fn.json_encode(req) .. "\n")
+  fn.chansend(M.job, fn.json_encode(req) .. "\n")
 end
 
 M.getCompletionItems = function()
@@ -70,10 +75,10 @@ end
 M.job = 0
 
 function M.register()
-  M.job = vim.fn.jobstart({ vim.fn["expand"]("<sfile>:p:h:h") .. "/binaries/TabNine_" .. vim.fn["trim"](vim.fn["system"]("uname", "-a")) }, {
-  on_stderr = function(_, data, _)
-    print('TabNine:', data)
-  end,
+  M.job = fn.jobstart({ vim.g.completion_tabnine_tabnine_path }, {
+  -- on_stderr = function(_, data, _)
+  --   print('TabNine:', "unknown error")
+  -- end,
   on_exit = function(_, code)
     if code ~= 143 then print('TabNine: exit', code) end
   end,
@@ -94,7 +99,7 @@ function M.register()
       -- }
 
       M.items = {}
-      local response = vim.fn.json_decode(data)
+      local response = fn.json_decode(data)
       local results = response.results
       if results == nil then
         return
