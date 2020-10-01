@@ -4,6 +4,15 @@ local api = vim.api
 local fn = vim.fn
 local completion = require 'completion'
 -- local match = require 'completion.matching'
+--
+local function json_decode(data)
+  local status, result = pcall(vim.fn.json_decode, data)
+  if status then
+    return result
+  else
+    return nil, result
+  end
+end
 
 M.callback = false
 M.getCallback = function() return M.callback end
@@ -99,7 +108,11 @@ function M.register()
       -- }
 
       M.items = {}
-      local response = fn.json_decode(data)
+      local response = json_decode(data)
+      if response == nil then
+        -- print('TabNine: json decode error')
+        return
+      end
       local results = response.results
       if results == nil then
         return
