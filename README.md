@@ -27,6 +27,10 @@ A **TabNine** completion source for [completion-nvim](https://github.com/haorenW
   ```
 - options
   ```
+  " tabnine priority (default: 0)
+  " Defaults to lowest priority
+  let g:completion_tabnine_priority = 0
+
   " tabnine binary path (default: expand("<sfile>:p:h:h") .. "/binaries/TabNine_Linux")
   let g:completion_tabnine_tabnine_path = ""
 
