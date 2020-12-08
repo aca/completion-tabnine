@@ -13,6 +13,11 @@ A **TabNine** completion source for [completion-nvim](https://github.com/haorenW
   Plug 'aca/completion-tabnine', { 'do': './install.sh' }
   ```
 
+  If you want to use specific version of tabnine
+  ```
+  Plug 'aca/completion-tabnine', { 'do': 'version=3.1.9 ./install.sh' }
+  ```
+
 ### Configuration
 - vimrc
   ```
