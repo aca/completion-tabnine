@@ -89,7 +89,7 @@ function M.register()
   M.max_num_results = vim.g.completion_tabnine_max_num_results
   M.sort_by_details = vim.g.completion_tabnine_sort_by_details 
 
-  M.job = fn.jobstart({ vim.g.completion_tabnine_tabnine_path }, {
+  M.job = fn.jobstart({ vim.g.completion_tabnine_tabnine_path, '--client=completion-nvim' }, {
   -- on_stderr = function(_, data, _)
   --   print('TabNine:', "unknown error")
   -- end,
